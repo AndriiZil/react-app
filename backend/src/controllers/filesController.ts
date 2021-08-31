@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction} from 'express';
 import { getRepository } from 'typeorm';
 import { File } from '../models/File';
+import {Directory} from '../models/Directory';
+import {Subfolder} from '../models/Subfolder';
 
 class FilesController {
 
@@ -46,7 +48,6 @@ class FilesController {
             if (searchString) {
                 files = await getRepository(File)
                     .createQueryBuilder('file')
-                    // .where(`MATCH(file.name) AGAINST ('${searchString}' IN BOOLEAN MODE)`)
                     .where('file.name like :name', { name: `%${searchString}%`})
                     .orWhere('file.tag like :tag', { tag: `%${searchString}%`})
                     .orWhere('file.text like :text', { text: `%${searchString}%`})
@@ -90,6 +91,45 @@ class FilesController {
                 .set(req.body)
                 .where('id = :id', { id: req.params.id })
                 .execute();
+
+            return res.status(204).end();
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async moveFile(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { fileId, destId } = req.params;
+
+            const [directory, subfolder] = await Promise.all([
+                getRepository(Directory).findOne({ id: destId }),
+                getRepository(Subfolder).findOne({ id: destId }),
+            ]);
+
+            if (directory) {
+                await getRepository(File)
+                    .createQueryBuilder()
+                    .update(File)
+                    .set({
+                        directory: destId,
+                        subfolder: null,
+                    })
+                    .where('id = :fileId', { fileId })
+                    .execute();
+            }
+
+            if (subfolder) {
+                await getRepository(File)
+                    .createQueryBuilder()
+                    .update(File)
+                    .set({
+                        subfolder: destId,
+                        directory: null,
+                    })
+                    .where('id = :fileId', { fileId })
+                    .execute();
+            }
 
             return res.status(204).end();
         } catch (err) {

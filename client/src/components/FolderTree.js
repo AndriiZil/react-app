@@ -3,17 +3,13 @@ import { useEffect, useState } from 'react';
 
 import Directories from './Directories'
 import {bindActionCreators} from 'redux';
-import actionCreators from '../app/action-creators';
-import {moveFileToSubFolder} from '../app/action-creators';
+import actionCreators, {setDropDestination} from '../app/action-creators';
+
 function FolderTree() {
     let dirs = [];
 
-    const [dropId, setDropId] = useState('');
-
-    const { currentDropItem, directories, subFolders } = useSelector(state => state.app);
-
     const dispatch = useDispatch();
-    const { moveFileToDirectory, moveFileToSubFolder } = bindActionCreators(actionCreators, dispatch);
+    const { setDropDestination } = bindActionCreators(actionCreators, dispatch);
 
     useEffect(() => {
         dirs = document.querySelectorAll('.destination');
@@ -37,22 +33,17 @@ function FolderTree() {
     }, [dirs]);
 
     function dragOver(e) {
-        const elementId = e.target.id;
-        setDropId(elementId);
+        // console.log('dragOver');
+        // setDropDestination(e.target.id)
     }
 
     function dragEnter(e) {
-        console.log('dragEnter >>>', e);
+        setDropDestination(e.target.id)
     }
 
-    function dragLeave(e) {
-        console.log('currentDropItem', currentDropItem);
-        console.log('DROP_DIR', dropId);
-    }
+    function dragLeave(e) {}
 
-    function dragDrop(e) {
-        console.log('DROP');
-    }
+    function dragDrop(e) {}
 
     return (
         <>

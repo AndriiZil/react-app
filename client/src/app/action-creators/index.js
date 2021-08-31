@@ -317,6 +317,35 @@ export const setSearchFiles = (search) => {
     }
 }
 
+export const setDropDestination = (destinationId) => {
+    return (dispatch) => {
+        dispatch({
+            type: 'SET_DROP_DESTINATION_ID',
+            payload: destinationId,
+        });
+    }
+}
+
+export const moveFile = (currentFileId, destinationId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'PATCH',
+            url: `http://localhost:3200/api/files/${currentFileId}/moveto/${destinationId}`
+        })
+
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        });
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
 const actionCreators = {
     loadDirectories,
     setCurrentDirectory,
@@ -337,6 +366,8 @@ const actionCreators = {
     editFile,
     deleteFile,
     setSearchFiles,
+    setDropDestination,
+    moveFile,
 }
 
 export default actionCreators;

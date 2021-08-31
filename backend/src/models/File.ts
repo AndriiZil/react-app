@@ -6,7 +6,7 @@ import { Subfolder } from './Subfolder';
 export class File {
 
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Index({ fulltext: true })
     @Column()

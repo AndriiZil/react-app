@@ -6,7 +6,7 @@ import { File } from './File';
 export class Subfolder {
 
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column()
     name: string;

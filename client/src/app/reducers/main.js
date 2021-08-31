@@ -6,6 +6,7 @@ const initialState = {
     currentSubDir: '',
     currentDropItem: '',
     currentFile: '',
+    dropDestinationId: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -62,6 +63,11 @@ const reducer = (state = initialState, action) => {
                 currentSubDir: '',
                 currentFile: '',
                 searchFiles: action.payload,
+            }
+        case 'SET_DROP_DESTINATION_ID':
+            return {
+                ...state,
+                dropDestinationId: action.payload,
             }
         default:
             return state;

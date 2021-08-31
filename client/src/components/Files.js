@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import actionCreators from '../app/action-creators';
+import actionCreators, {setCurrentFile} from '../app/action-creators';
 
 function Files() {
 
     let files = [];
 
     const dispatch = useDispatch();
-    const { setCurrentDropItem, setSubFolders } = bindActionCreators(actionCreators, dispatch);
-    const { currentDirectory, currentSubDir } = useSelector(state => state.app)
+    const { setCurrentDropItem, setSubFolders, setCurrentFile } = bindActionCreators(actionCreators, dispatch);
+    const { currentDirectory, currentSubDir, currentFile } = useSelector(state => state.app)
 
     useEffect(() => {
         files = document.querySelectorAll('.file');
@@ -46,15 +46,21 @@ function Files() {
         fileItems = currentSubDir.files
     }
 
+    const onSelectFile = (e, item) => {
+        e.preventDefault();
+        setCurrentFile(item)
+    }
+
     return (
         <>
             {
                 fileItems?.map(item => {
                     return <div
                         key={item.id}
-                        className='file'
+                        className={`file ${currentFile.id === item.id ? 'active' : ''}`}
                         draggable='true'
                         id={item.id}
+                        onClick={(e) => onSelectFile(e, item)}
                     >
                         {item.name}
                     </div>

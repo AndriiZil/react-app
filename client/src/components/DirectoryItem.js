@@ -14,13 +14,6 @@ function DirectoryItem ({ directory,  handleClickOnDirectory, showSubfolders}) {
         >
             {directory.name}
             <DirectorySubfolders subfolders={directory.subfolders} parentFolder={directory} />
-            {
-                directory &&
-                directory.files &&
-                directory.files.map(file => (
-                    <FileItem key={file.id} file={file} />
-                ))
-            }
         </li>
     )
 }

@@ -58,6 +58,14 @@ nav {
     height: 40px;
     margin: 25px 0px 10px 25px;
     border: 1px solid blue;
+    overflow:hidden;
+    display:inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file.active {
+    border-color: yellow;
 }
 
 .filesContainer {

@@ -13,6 +13,9 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 directories: action.payload,
+                currentDirectory: '',
+                currentSubDir: '',
+                currentFile: '',
             }
         case 'SET_CURRENT_PARENT_FOLDER':
             console.log(action.payload);
@@ -26,6 +29,7 @@ const reducer = (state = initialState, action) => {
         case 'SET_CURRENT_SUBDIR':
             return {
                 ...state,
+                currentFile: '',
                 currentDirectory: action.payload.parentDir,
                 currentSubDir: action.payload.currentSubDir,
             }

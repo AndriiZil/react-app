@@ -41,7 +41,9 @@ function FileItem ({ file }) {
 
     return (
         <ul>
-            <li id={file.id} onClick={handleFile}>{file.name}</li>
+            <li id={file.id} onClick={handleFile} style={{ width: "auto"}}>
+                {file.name}
+            </li>
         </ul>
     )
 }

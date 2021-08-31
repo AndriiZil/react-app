@@ -12,6 +12,14 @@ export class File {
     @Column()
     name: string;
 
+    @Index({ fulltext: true })
+    @Column({ default: null })
+    tag: string | null;
+
+    @Index({ fulltext: true })
+    @Column({ default: null })
+    text: string | null;
+
     @ManyToOne(() => Subfolder, subfolder => subfolder.files, {
         onDelete: 'CASCADE'
     })

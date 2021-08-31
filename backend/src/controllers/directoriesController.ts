@@ -49,8 +49,14 @@ class DirectoriesController {
 
     static async updateById(req: Request, res: Response, next: NextFunction) {
         try {
+            await getRepository(Directory)
+                .createQueryBuilder()
+                .update(Directory)
+                .set(req.body)
+                .where('id = :id', { id: req.params.id })
+                .execute();
 
-            return res.send('ok');
+            return res.status(204).end();
         } catch (err) {
             next(err);
         }

@@ -185,6 +185,127 @@ export const deleteDirectory = (directoryId) => {
     }
 }
 
+export const createFile = (data) => {
+    return async (dispatch) => {
+        const { type, parentId, name, tag, text } = data;
+        if (type === 'subDir') {
+            await axios({
+                method: 'POST',
+                url: `http://localhost:3200/api/files/${parentId}/create`,
+                data: { name, tag, text }
+            });
+        } else {
+            await axios({
+                method: 'POST',
+                url: `http://localhost:3200/api/files/directory/${parentId}/create`,
+                data: { name, tag, text }
+            });
+        }
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+export const editSubDirectory = (name, directoryId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'PATCH',
+            url: `http://localhost:3200/api/subfolders/${directoryId}`,
+            data: {
+                name
+            }
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+export const editDirectory = (name, directoryId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'PATCH',
+            url: `http://localhost:3200/api/directories/${directoryId}`,
+            data: {
+                name
+            }
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+export const editFile = (name = '', tag = '', text = '', directoryId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'PATCH',
+            url: `http://localhost:3200/api/files/${directoryId}`,
+            data: {
+                name,
+                tag,
+                text
+            }
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+export const deleteFile = (fileId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'DELETE',
+            url: `http://localhost:3200/api/files/${fileId}`
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
 const actionCreators = {
     loadDirectories,
     setCurrentDirectory,
@@ -198,7 +319,12 @@ const actionCreators = {
     createDirectory,
     createSubDirectory,
     deleteSubdirectory,
-    deleteDirectory
+    deleteDirectory,
+    createFile,
+    editSubDirectory,
+    editDirectory,
+    editFile,
+    deleteFile,
 }
 
 export default actionCreators;

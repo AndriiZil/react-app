@@ -11,8 +11,8 @@ r.get('/', FilesController.getAll);
 
 r.get('/:id', FilesController.getById);
 
-r.put('/:id', FilesController.updateById);
+r.patch('/:id', FilesController.updateById);
 
-r.delete('/', FilesController.deleteById);
+r.delete('/:id', FilesController.deleteById);
 
 export default r;

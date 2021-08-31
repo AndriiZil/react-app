@@ -10,6 +10,7 @@ class FilesController {
             const file = new File();
 
             file.name = req.body.name;
+            file.directory = null;
             file.subfolder = req.params.subfolderId;
 
             await getRepository(File).save(file);
@@ -80,10 +81,14 @@ class FilesController {
 
     static async updateById(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log(req.params);
-            console.log(req.body);
+            await getRepository(File)
+                .createQueryBuilder()
+                .update(File)
+                .set(req.body)
+                .where('id = :id', { id: req.params.id })
+                .execute();
 
-            return res.send('ok');
+            return res.status(204).end();
         } catch (err) {
             next(err);
         }
@@ -91,8 +96,14 @@ class FilesController {
 
     static async deleteById(req: Request, res: Response, next: NextFunction) {
         try {
+            await getRepository(File)
+                .createQueryBuilder()
+                .delete()
+                .from(File)
+                .where('id = :id', { id: req.params.id })
+                .execute();
 
-            return res.send('ok');
+            return res.status(204).end();
         } catch (err) {
             next(err);
         }

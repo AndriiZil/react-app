@@ -6,24 +6,30 @@ import actionCreators from '../app/action-creators';
 
 function Navigation() {
 
-    const { currentSubDir, currentDirectory } = useSelector(state => state.app);
+    const { currentSubDir, currentDirectory, currentFile } = useSelector(state => state.app);
 
     const dispatch = useDispatch();
-    const { deleteSubdirectory, deleteDirectory } = bindActionCreators(actionCreators, dispatch);
+    const { deleteSubdirectory, deleteDirectory, deleteFile } = bindActionCreators(actionCreators, dispatch);
 
     const onDeleteClick = () => {
+        if (currentFile) {
+            return deleteFile(currentFile.id);
+        }
+
         if (currentSubDir) {
-            deleteSubdirectory(currentSubDir.id);
-        } else {
-            deleteDirectory(currentDirectory.id);
+            return deleteSubdirectory(currentSubDir.id);
+        }
+
+        if (currentDirectory) {
+            return deleteDirectory(currentDirectory.id);
         }
     }
 
     return (
         <nav>
             <Modal title={"Add"} buttonClassNames={" mb-3"} dataModalId={"createModal"} />
-            <Modal title={"Edit"} buttonClassNames={" mb-3"} id={"null"} dataModalId={"editModal"}  />
-            <button disabled={currentSubDir || currentDirectory ? false : true} type="button" className={`btn btn-danger`} onClick={onDeleteClick} >
+            <Modal disabled={currentSubDir || currentDirectory || currentFile ? false : true} title={"Edit"} buttonClassNames={"btn-warning mb-3"} id={"null"} dataModalId={"editModal"} typeModal={"edit"}  />
+            <button disabled={currentSubDir || currentDirectory || currentFile ? false : true} type="button" className={`btn btn-danger`} onClick={onDeleteClick} >
                 Remove
             </button>
         </nav>

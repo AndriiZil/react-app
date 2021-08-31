@@ -10,6 +10,13 @@ header {
     background-color: blue;
     color: wheat;
 }
+ul {
+    padding-left: 0.5rem !important;
+}
+
+ul li {
+    padding: 2px;
+}
 
 h2 {
     margin: 0;

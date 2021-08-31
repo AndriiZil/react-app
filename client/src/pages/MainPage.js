@@ -7,6 +7,7 @@ import FolderTree from '../components/FolderTree';
 import Navigation from '../components/Navigation';
 import { loadDirectories } from '../app/action-creators';
 import Files from '../components/Files';
+import AutoCompleteSearch from '../components/AutoCompleteSearch';
 // import FileContainer from '../components/FileContainer';
 
 export default function MainPage() {
@@ -33,7 +34,7 @@ export default function MainPage() {
                     </div>
                     <div className='files'>
                         <div>
-                            <input type='text'/>
+                            <AutoCompleteSearch />
                         </div>
                         <div className='filesContainer'>
                             <Files />

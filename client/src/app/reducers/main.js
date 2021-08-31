@@ -1,6 +1,7 @@
 const initialState = {
     directories: [],
     subFolders: [],
+    searchFiles: [],
     currentDirectory: '',
     currentSubDir: '',
     currentDropItem: '',
@@ -53,6 +54,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 directories: action.payload.directories,
                 subFolders: action.payload.subFolders,
+            }
+        case 'SET_SEARCH_FILES':
+            return {
+                ...state,
+                currentDirectory: '',
+                currentSubDir: '',
+                currentFile: '',
+                searchFiles: action.payload,
             }
         default:
             return state;

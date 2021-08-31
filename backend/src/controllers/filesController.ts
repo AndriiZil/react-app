@@ -41,12 +41,15 @@ class FilesController {
         try {
             let files: File[] = [];
             // @ts-ignore
-            const searchString = req.query.search.toLowerCase();
+            const searchString = req.query.search || '';
 
             if (searchString) {
                 files = await getRepository(File)
                     .createQueryBuilder('file')
-                    .where(`MATCH(file.name) AGAINST ('${searchString}' IN BOOLEAN MODE)`)
+                    // .where(`MATCH(file.name) AGAINST ('${searchString}' IN BOOLEAN MODE)`)
+                    .where('file.name like :name', { name: `%${searchString}%`})
+                    .orWhere('file.tag like :tag', { tag: `%${searchString}%`})
+                    .orWhere('file.text like :text', { text: `%${searchString}%`})
                     .leftJoinAndSelect('file.subfolder', 'fileSubfolder')
                     .leftJoinAndSelect('file.directory', 'fileDirectory')
                     .getMany()

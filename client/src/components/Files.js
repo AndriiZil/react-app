@@ -9,7 +9,7 @@ function Files() {
 
     const dispatch = useDispatch();
     const { setCurrentDropItem, setSubFolders, setCurrentFile } = bindActionCreators(actionCreators, dispatch);
-    const { currentDirectory, currentSubDir, currentFile } = useSelector(state => state.app)
+    const { currentDirectory, currentSubDir, currentFile, searchFiles } = useSelector(state => state.app)
 
     useEffect(() => {
         files = document.querySelectorAll('.file');
@@ -54,10 +54,28 @@ function Files() {
     return (
         <>
             {
+                (currentDirectory || currentSubDir) &&
                 fileItems?.map(item => {
                     return <div
                         key={item.id}
                         className={`file ${currentFile.id === item.id ? 'active' : ''}`}
+                        draggable='true'
+                        id={item.id}
+                        onClick={(e) => onSelectFile(e, item)}
+                    >
+                        {item.name}
+                    </div>
+                })
+            }
+
+            {
+                !currentDirectory &&
+                !currentSubDir &&
+                !currentFile &&
+                searchFiles?.map(item => {
+                    return <div
+                        key={item.id}
+                        className={`file`}
                         draggable='true'
                         id={item.id}
                         onClick={(e) => onSelectFile(e, item)}

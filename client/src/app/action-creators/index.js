@@ -306,6 +306,17 @@ export const deleteFile = (fileId) => {
     }
 }
 
+export const setSearchFiles = (search) => {
+    return async (dispatch) => {
+        const response = await axios.get(`http://localhost:3200/api/files?search=${search}`);
+
+        dispatch({
+            type: 'SET_SEARCH_FILES',
+            payload: response.data,
+        });
+    }
+}
+
 const actionCreators = {
     loadDirectories,
     setCurrentDirectory,
@@ -325,6 +336,7 @@ const actionCreators = {
     editDirectory,
     editFile,
     deleteFile,
+    setSearchFiles,
 }
 
 export default actionCreators;

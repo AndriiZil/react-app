@@ -15,43 +15,33 @@ const reducer = (state = initialState, action) => {
                 directories: action.payload,
             }
         case 'SET_CURRENT_PARENT_FOLDER':
+            console.log(action.payload);
             return {
                 ...state,
                 directories: [...state.directories],
                 currentDirectory: action.payload,
+                currentSubDir: '',
+                currentFile: '',
             }
         case 'SET_CURRENT_SUBDIR':
             return {
                 ...state,
-                directories: [...state.directories],
-                currentDirectory: state.currentDirectory,
-                currentSubDir: action.payload,
+                currentDirectory: action.payload.parentDir,
+                currentSubDir: action.payload.currentSubDir,
             }
         case 'SET_CURRENT_DROP_ITEM':
             return {
                 ...state,
-                directories: [...state.directories],
-                currentDirectory: state?.currentDirectory,
-                currentSubDir: state?.currentSubDir,
                 currentDropItem: action.payload,
             }
         case 'SET_CURRENT_FILE':
             return {
                 ...state,
-                directories: [...state.directories],
-                currentDirectory: state?.currentDirectory,
-                currentSubDir: state?.currentSubDir,
-                currentDropItem: state?.currentDropItem,
                 currentFile: action.payload,
             }
         case 'SET_SUB_FOLDERS':
             return {
                 ...state,
-                directories: [...state.directories],
-                currentDirectory: state?.currentDirectory,
-                currentSubDir: state?.currentSubDir,
-                currentDropItem: state?.currentDropItem,
-                currentFile: state?.currentFile,
                 subFolders: action.payload,
             }
         case 'MOVE_FILE_TO_SUBFOLDER':

@@ -1,9 +1,9 @@
 import FileItem from './FileItem';
 import { bindActionCreators } from 'redux';
-import { actionCreators } from '../app';
+import actionCreators from '../app/action-creators';
 import { useDispatch, useSelector } from 'react-redux';
 
-function DirectorySubfolderItem ({ subfolder }) {
+function DirectorySubfolderItem ({ subfolder, parentFolder }) {
 
     const currentDirectory = useSelector(state => state.app.currentDirectory);
     const directories = useSelector(state => state.app.directories);
@@ -24,15 +24,15 @@ function DirectorySubfolderItem ({ subfolder }) {
         removeClassFromAllElements('selected');
         element.classList.add('selected');
 
-        const directory = directories.find(directory => directory.name === currentDirectory.name);
+        const directory = directories?.find(directory => directory.name === currentDirectory.name);
 
         if (!directory?.subfolders) {
             return;
         }
 
-        const subfolder = directory.subfolders?.find(sub => sub.name === element.innerText);
+        const subfolder = directory?.subfolders?.find(sub => sub.id === element.id);
 
-        setCurrentSubDir(subfolder)
+        setCurrentSubDir(subfolder, parentFolder)
     }
 
     return (

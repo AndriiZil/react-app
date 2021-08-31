@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import Directories from './Directories'
 import {bindActionCreators} from 'redux';
-import {actionCreators} from '../app';
+import actionCreators from '../app/action-creators';
 import {moveFileToSubFolder} from '../app/action-creators';
 function FolderTree() {
     let dirs = [];

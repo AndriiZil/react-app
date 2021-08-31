@@ -1,6 +1,6 @@
 import DirectoryItem from './DirectoryItem';
 import { bindActionCreators } from 'redux';
-import { actionCreators } from '../app';
+import actionCreators from '../app/action-creators';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentFile } from '../app/action-creators';
 
@@ -31,10 +31,9 @@ function Directories() {
         removeClassFromAllElements('selected');
         element.classList.add('selected');
 
+        console.log(currentDirectory);
         if (currentDirectory) {
             setCurrentDirectory(currentDirectory);
-            setCurrentSubDir('');
-            setCurrentFile('')
         }
 
     }

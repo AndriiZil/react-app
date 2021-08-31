@@ -57,8 +57,14 @@ class SubfoldersController {
 
     static async deleteById(req: Request, res: Response, next: NextFunction) {
         try {
+            await getRepository(Subfolder)
+                .createQueryBuilder()
+                .delete()
+                .from(Subfolder)
+                .where('id = :id', { id: req.params.id })
+                .execute();
 
-            return res.send('ok');
+            return res.status(204).end();
         } catch (err) {
             next(err);
         }

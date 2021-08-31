@@ -58,8 +58,14 @@ class DirectoriesController {
 
     static async deleteById(req: Request, res: Response, next: NextFunction) {
         try {
+            await getRepository(Directory)
+                .createQueryBuilder()
+                .delete()
+                .from(Directory)
+                .where('id = :id', { id: req.params.id })
+                .execute();
 
-            return res.send('ok');
+            return res.status(204).end();
         } catch (err) {
             next(err);
         }

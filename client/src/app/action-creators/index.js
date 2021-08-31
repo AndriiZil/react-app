@@ -11,8 +11,53 @@ export const loadDirectories = () => {
     };
 }
 
+export const createDirectory = (directoryName) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:3200/api/directories',
+            data: {
+                name: directoryName,
+            }
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    };
+}
+
+export const createSubDirectory = (directoryName, directoryId = '') => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: `http://localhost:3200/api/subfolders/${directoryId}/create`,
+            data: {
+                name: directoryName,
+            }
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    };
+}
+
 export const setCurrentDirectory = (currentDirectory) => {
     return (dispatch) => {
+        console.log('setCurrentDirectory', currentDirectory);
         dispatch({
             type: 'SET_CURRENT_PARENT_FOLDER',
             payload: currentDirectory,
@@ -20,11 +65,14 @@ export const setCurrentDirectory = (currentDirectory) => {
     }
 }
 
-export const setCurrentSubDir = (currentSubDir) => {
+export const setCurrentSubDir = (currentSubDir, parentDir) => {
     return (dispatch) => {
         dispatch({
             type: 'SET_CURRENT_SUBDIR',
-            payload: currentSubDir,
+            payload: {
+                currentSubDir,
+                parentDir
+            },
         });
     }
 }
@@ -96,3 +144,61 @@ export const moveFileToSubFolder = (dropItemId, subFolderId) => {
         });
     }
 }
+
+export const deleteSubdirectory = (subDirectoryId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'DELETE',
+            url: `http://localhost:3200/api/subfolders/${subDirectoryId}`
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+export const deleteDirectory = (directoryId) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'DELETE',
+            url: `http://localhost:3200/api/directories/${directoryId}`
+        });
+
+        const directories = await axios({
+            method: 'GET',
+            url: 'http://localhost:3200/api/directories',
+        })
+
+
+        dispatch({
+            type: 'LOAD_DIRECTORIES',
+            payload: directories.data,
+        });
+    }
+}
+
+const actionCreators = {
+    loadDirectories,
+    setCurrentDirectory,
+    setCurrentSubDir,
+    setCurrentDropItem,
+    showSubFolder,
+    setCurrentFile,
+    setSubFolders,
+    moveFileToDirectory,
+    moveFileToSubFolder,
+    createDirectory,
+    createSubDirectory,
+    deleteSubdirectory,
+    deleteDirectory
+}
+
+export default actionCreators;

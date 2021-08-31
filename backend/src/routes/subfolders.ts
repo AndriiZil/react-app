@@ -11,6 +11,6 @@ r.get('/:id', SubfoldersController.getById);
 
 r.patch('/:id', SubfoldersController.updateById);
 
-r.delete('/', SubfoldersController.deleteById);
+r.delete('/:id', SubfoldersController.deleteById);
 
 export default r;

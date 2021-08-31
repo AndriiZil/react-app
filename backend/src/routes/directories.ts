@@ -11,6 +11,6 @@ r.get('/:id', DirectoriesController.getById);
 
 r.patch('/:id', DirectoriesController.updateById);
 
-r.delete('/', DirectoriesController.deleteById);
+r.delete('/:id', DirectoriesController.deleteById);
 
 export default r;

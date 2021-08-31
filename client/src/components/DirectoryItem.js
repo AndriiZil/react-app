@@ -13,7 +13,7 @@ function DirectoryItem ({ directory,  handleClickOnDirectory, showSubfolders}) {
             className={'destination'}
         >
             {directory.name}
-            <DirectorySubfolders subfolders={directory.subfolders} />
+            <DirectorySubfolders subfolders={directory.subfolders} parentFolder={directory} />
             {
                 directory &&
                 directory.files &&

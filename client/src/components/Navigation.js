@@ -1,24 +1,31 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import Modal from './Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import actionCreators from '../app/action-creators';
 
 function Navigation() {
-    const history = useHistory();
 
-    const goToCreatePage = () => {
-        history.push('/create');
+    const { currentSubDir, currentDirectory } = useSelector(state => state.app);
+
+    const dispatch = useDispatch();
+    const { deleteSubdirectory, deleteDirectory } = bindActionCreators(actionCreators, dispatch);
+
+    const onDeleteClick = () => {
+        if (currentSubDir) {
+            deleteSubdirectory(currentSubDir.id);
+        } else {
+            deleteDirectory(currentDirectory.id);
+        }
     }
 
     return (
         <nav>
-            <div className="navButtons add" onClick={goToCreatePage}>
-                <h4>Add</h4>
-            </div>
-            <div className="navButtons edit">
-                <h4>Edit</h4>
-            </div>
-            <div className="navButtons remove">
-                <h4>Remove</h4>
-            </div>
+            <Modal title={"Add"} buttonClassNames={" mb-3"} dataModalId={"createModal"} />
+            <Modal title={"Edit"} buttonClassNames={" mb-3"} id={"null"} dataModalId={"editModal"}  />
+            <button disabled={currentSubDir || currentDirectory ? false : true} type="button" className={`btn btn-danger`} onClick={onDeleteClick} >
+                Remove
+            </button>
         </nav>
     )
 }

@@ -1,6 +1,6 @@
 import DirectorySubfolderItem from './DirectorySubfolderItem';
 
-function DirectorySubfolders({subfolders}) {
+function DirectorySubfolders({subfolders, parentFolder}) {
 
     return (
         <ul>
@@ -10,6 +10,7 @@ function DirectorySubfolders({subfolders}) {
                     <DirectorySubfolderItem
                         key={subfolder.id}
                         subfolder={subfolder}
+                        parentFolder={parentFolder}
                     />
                 ))
             }

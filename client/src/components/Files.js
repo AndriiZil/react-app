@@ -14,6 +14,7 @@ function Files() {
         setCurrentFile,
         moveFile,
     } = bindActionCreators(actionCreators, dispatch);
+
     const {
         currentDirectory,
         currentSubDir,
@@ -45,9 +46,6 @@ function Files() {
     }
 
     function dragEnd(e) {
-        console.log('dragEnd >>', e);
-        // console.log('currentDropItem >>', currentDropItem);
-        // console.log('dropDestinationId >>', dropDestinationId);
         moveFile(currentDropItem, dropDestinationId);
     }
 
@@ -78,7 +76,7 @@ function Files() {
                         id={item.id}
                         onClick={(e) => onSelectFile(e, item)}
                     >
-                        {item.name}
+                        { item.name }
                     </div>
                 })
             }
@@ -95,7 +93,7 @@ function Files() {
                         id={item.id}
                         onClick={(e) => onSelectFile(e, item)}
                     >
-                        {item.name}
+                        { item.name }
                     </div>
                 })
             }

@@ -1,25 +1,19 @@
-import React, {useEffect} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from './../app/action-creators';
 import './MainPage.css';
 import FolderTree from '../components/FolderTree';
 import Navigation from '../components/Navigation';
-import { loadDirectories } from '../app/action-creators';
 import Files from '../components/Files';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
-// import FileContainer from '../components/FileContainer';
 
 export default function MainPage() {
-    // const store = useSelector(store => store);
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     const { loadDirectories } = bindActionCreators(actionCreators, dispatch);
 
-    useEffect(() => loadDirectories(), []);
-
-    const currentFolder = useSelector(state => state.app.currentDirectory);
-    const currentSubfolder = useSelector(state => state.app.currentSubDir);
+    useEffect(() => loadDirectories().catch(console.error), []);
 
     return (
         <div>
@@ -38,7 +32,6 @@ export default function MainPage() {
                         </div>
                         <div className='filesContainer'>
                             <Files />
-                            {/*<FileContainer />*/}
                         </div>
                     </div>
                 </div>

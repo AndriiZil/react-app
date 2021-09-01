@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 import Directories from './Directories'
-import {bindActionCreators} from 'redux';
-import actionCreators, {setDropDestination} from '../app/action-creators';
+import { bindActionCreators } from 'redux';
+import actionCreators from '../app/action-creators';
 
 function FolderTree() {
     let dirs = [];

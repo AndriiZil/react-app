@@ -6,10 +6,33 @@ import { bindActionCreators } from 'redux';
 import actionCreators from './../app/action-creators';
 
 function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModalId }) {
-    const [modal, setModal] = useState(null)
+    const {
+        directories,
+        currentDirectory,
+        currentSubDir,
+        currentFile
+    } = useSelector((state) => state.app);
 
-    const {directories, currentDirectory, currentSubDir, currentFile} = useSelector((state) => state.app)
-    const exampleModal = useRef()
+    const [name, setName] = useState('');
+    const [type, setType] = useState('1');
+    const [folder, setFolder] = useState('');
+    const [tag, setTag] = useState('');
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        setName('');
+        setFolder('');
+        setTag('');
+        setText('');
+        if (currentDirectory && currentSubDir && currentFile) {
+            setType('2');
+            setTag(currentFile.tag || '');
+            setText(currentFile.text || '');
+        } else {
+            setType('1');
+        }
+
+    }, [currentDirectory , currentSubDir , currentFile]);
 
     const dispatch = useDispatch();
     const {
@@ -20,27 +43,6 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
         editDirectory,
         editFile
     } = bindActionCreators(actionCreators, dispatch);
-
-    const [name, setName] = useState('')
-    const [type, setType] = useState('1')
-    const [folder, setFolder] = useState('')
-    const [tag, setTag] = useState('')
-    const [text, setText] = useState('')
-
-    useEffect(() => {
-        setName('')
-        setFolder('')
-        setTag('')
-        setText('')
-        if (currentDirectory && currentSubDir && currentFile) {
-            setType('2');
-            setTag(currentFile.tag || '')
-            setText(currentFile.text || '')
-        } else {
-            setType('1')
-        }
-
-    }, [currentDirectory , currentSubDir , currentFile])
 
     const setDefaultVal = () => {
         if (typeModal === 'edit' && name.length === 0 && (currentDirectory || currentSubDir || currentFile)) {
@@ -62,16 +64,10 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
     }
 
     const onSubmit = () => {
-        console.log('-=-= onSubmit', name, type, folder);
-
         if (!name) return true;
-        // const modalWindow = document.getElementsByClassName('customModal');
-        // for (let i = 0; i<= modalWindow.length; i++) {
-        //     modalWindow[i].classList.remove('show');
-        //     modalWindow[i].classList.add('hide');
-        // }
+
         if (typeModal === 'create') {
-            if (type === "2" && (currentSubDir || currentDirectory)) {
+            if (type === '2' && (currentSubDir || currentDirectory)) {
                 createFile({
                     type: currentSubDir ? 'subDir' : 'dir',
                     name,
@@ -82,8 +78,8 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
             if (folder.length > 0) {
                 if (type === '1') {
                     createSubDirectory(name, folder)
-                    setName("")
-                    setType("1")
+                    setName('')
+                    setType('1')
                     return false;
                 }
             } else {
@@ -95,7 +91,7 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
         }
 
         if (typeModal === 'edit') {
-            if (type === "2" && (currentSubDir && currentDirectory && currentFile)) {
+            if (type === '2' && (currentSubDir && currentDirectory && currentFile)) {
                 editFile(
                     name,
                     tag,
@@ -106,18 +102,16 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
             }
 
             if (currentSubDir && type === '1') {
-                console.log('currentSubDir >>>', currentSubDir);
                 editSubDirectory(name, currentSubDir.id)
-                setName("")
-                setType("1")
+                setName('')
+                setType('1')
                 return false
             }
 
             if (currentDirectory && type === '1') {
-                console.log('currentDirectory >>>', currentDirectory);
                 editDirectory(name, currentDirectory.id)
-                setName("")
-                setType("1")
+                setName('')
+                setType('1')
             }
         }
     }

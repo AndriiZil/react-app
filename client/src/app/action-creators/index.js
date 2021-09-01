@@ -57,7 +57,6 @@ export const createSubDirectory = (directoryName, directoryId = '') => {
 
 export const setCurrentDirectory = (currentDirectory) => {
     return (dispatch) => {
-        console.log('setCurrentDirectory', currentDirectory);
         dispatch({
             type: 'SET_CURRENT_PARENT_FOLDER',
             payload: currentDirectory,

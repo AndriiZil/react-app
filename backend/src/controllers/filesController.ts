@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 import { File } from '../models/File';
 import {Directory} from '../models/Directory';
 import {Subfolder} from '../models/Subfolder';
+import {customError} from '../utils';
 
 class FilesController {
 
@@ -17,7 +18,7 @@ class FilesController {
 
             await getRepository(File).save(file);
 
-            return res.send(file);
+            return res.status(201).send(file);
         } catch (err) {
             next(err);
         }
@@ -33,7 +34,7 @@ class FilesController {
 
             await getRepository(File).save(file);
 
-            return res.send(file);
+            return res.status(201).send(file);
         } catch (err) {
             next(err);
         }
@@ -101,6 +102,10 @@ class FilesController {
     static async moveFile(req: Request, res: Response, next: NextFunction) {
         try {
             const { fileId, destId } = req.params;
+
+            if (!fileId || !destId) {
+                customError('Not enough incoming params', 422);
+            }
 
             const [directory, subfolder] = await Promise.all([
                 getRepository(Directory).findOne({ id: destId }),

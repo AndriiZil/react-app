@@ -1,7 +1,6 @@
 import DirectorySubfolderItem from './DirectorySubfolderItem';
 
 function DirectorySubfolders({subfolders, parentFolder}) {
-
     return (
         <ul>
             {

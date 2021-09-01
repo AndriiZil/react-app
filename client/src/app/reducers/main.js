@@ -20,10 +20,8 @@ const reducer = (state = initialState, action) => {
                 currentFile: '',
             }
         case 'SET_CURRENT_PARENT_FOLDER':
-            console.log(action.payload);
             return {
                 ...state,
-                directories: [...state.directories],
                 currentDirectory: action.payload,
                 currentSubDir: '',
                 currentFile: '',

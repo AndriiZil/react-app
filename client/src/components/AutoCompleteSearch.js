@@ -1,7 +1,7 @@
 import Autocomplete from 'react-autocomplete'
-import {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import actionCreators from '../app/action-creators';
 import axios from 'axios';
 

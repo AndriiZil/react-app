@@ -1,7 +1,6 @@
-import FileItem from './FileItem';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../app/action-creators';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 function DirectorySubfolderItem ({ subfolder, parentFolder }) {
     const dispatch = useDispatch();
@@ -24,7 +23,7 @@ function DirectorySubfolderItem ({ subfolder, parentFolder }) {
     }
 
     return (
-        <li onClick={handleSubfolderClick}>
+        <li onClick={handleSubfolderClick} className={'destination'} id={subfolder.id} >
             <span id={subfolder.id}>{subfolder.name}</span>
         </li>
     )

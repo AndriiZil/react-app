@@ -114,36 +114,6 @@ export const setSubFolders = () => {
     }
 }
 
-export const moveFileToDirectory = (dropItemId, destinationId) => {
-    return async (dispatch) => {
-        dispatch({
-            type: 'SET_CURRENT_FILE',
-            payload: {
-                directories: [],
-                subFolders: []
-            },
-        });
-    }
-}
-
-export const moveFileToSubFolder = (dropItemId, subFolderId) => {
-    return async (dispatch) => {
-        const directories = await axios.get('http://localhost:3200/api/directories');
-
-        await axios.put(`http://localhost:3200/api/files/${dropItemId}`, {
-            subFolderId
-        });
-
-        dispatch({
-            type: 'MOVE_FILE_TO_SUBFOLDER',
-            payload: {
-                directories,
-                subFolders: []
-            },
-        });
-    }
-}
-
 export const deleteSubdirectory = (subDirectoryId) => {
     return async (dispatch) => {
         await axios({
@@ -154,8 +124,7 @@ export const deleteSubdirectory = (subDirectoryId) => {
         const directories = await axios({
             method: 'GET',
             url: 'http://localhost:3200/api/directories',
-        })
-
+        });
 
         dispatch({
             type: 'LOAD_DIRECTORIES',
@@ -175,7 +144,6 @@ export const deleteDirectory = (directoryId) => {
             method: 'GET',
             url: 'http://localhost:3200/api/directories',
         })
-
 
         dispatch({
             type: 'LOAD_DIRECTORIES',
@@ -201,11 +169,15 @@ export const createFile = (data) => {
             });
         }
 
-        const directories = await axios({
-            method: 'GET',
-            url: 'http://localhost:3200/api/directories',
-        })
+        const [directories, files] = await Promise.all([
+            axios.get('http://localhost:3200/api/directories'),
+            axios.get('http://localhost:3200/api/files')
+        ])
 
+        dispatch({
+            type: 'SET_FILES',
+            payload: files.data,
+        });
 
         dispatch({
             type: 'LOAD_DIRECTORIES',
@@ -275,8 +247,14 @@ export const editFile = (name = '', tag = '', text = '', directoryId) => {
         const directories = await axios({
             method: 'GET',
             url: 'http://localhost:3200/api/directories',
-        })
+        });
 
+        const response = await axios.get('http://localhost:3200/api/files');
+
+        dispatch({
+            type: 'SET_FILES',
+            payload: response.data,
+        });
 
         dispatch({
             type: 'LOAD_DIRECTORIES',
@@ -292,11 +270,15 @@ export const deleteFile = (fileId) => {
             url: `http://localhost:3200/api/files/${fileId}`
         });
 
-        const directories = await axios({
-            method: 'GET',
-            url: 'http://localhost:3200/api/directories',
-        })
+        const [directories, files] = await Promise.all([
+            axios.get('http://localhost:3200/api/directories'),
+            axios.get('http://localhost:3200/api/files'),
+        ]);
 
+        dispatch({
+            type: 'SET_FILES',
+            payload: files.data,
+        });
 
         dispatch({
             type: 'LOAD_DIRECTORIES',
@@ -321,6 +303,17 @@ export const setDropDestination = (destinationId) => {
         dispatch({
             type: 'SET_DROP_DESTINATION_ID',
             payload: destinationId,
+        });
+    }
+}
+
+export const setFiles = () => {
+    return async (dispatch) => {
+        const response = await axios.get('http://localhost:3200/api/files');
+
+        dispatch({
+            type: 'SET_FILES',
+            payload: response.data,
         });
     }
 }
@@ -353,8 +346,6 @@ const actionCreators = {
     showSubFolder,
     setCurrentFile,
     setSubFolders,
-    moveFileToDirectory,
-    moveFileToSubFolder,
     createDirectory,
     createSubDirectory,
     deleteSubdirectory,
@@ -366,6 +357,7 @@ const actionCreators = {
     deleteFile,
     setSearchFiles,
     setDropDestination,
+    setFiles,
     moveFile,
 }
 

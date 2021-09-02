@@ -1,30 +1,24 @@
 import Autocomplete from 'react-autocomplete'
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../app/action-creators';
-import axios from 'axios';
 
 function AutoCompleteSearch () {
 
     const [value, setValue] = useState('');
-    const [files, setFiles] = useState([]);
     const [items, setItems] = useState([]);
 
-    const getAllFiles = async () => {
-        const response = await axios.get('http://localhost:3200/api/files');
-        setFiles(response.data);
-    }
-
     const dispatch = useDispatch();
-    const { setSearchFiles } = bindActionCreators(actionCreators, dispatch);
+    const { setSearchFiles, setFiles } = bindActionCreators(actionCreators, dispatch);
+    const { files } = useSelector(state => state.app);
 
     const searchFiles = async (search) => {
         setSearchFiles(search);
     }
 
     useEffect(() => {
-       getAllFiles().catch(console.error);
+        setFiles().catch(console.error);
     }, [])
 
     useEffect(() => {
@@ -42,7 +36,7 @@ function AutoCompleteSearch () {
     }
 
     const onSelectHandler = (e) => {
-        searchFiles(e)
+        searchFiles(e).catch(console.error);
     }
 
     return (

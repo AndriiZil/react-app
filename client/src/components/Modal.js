@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
         setFolder('');
         setTag('');
         setText('');
-        if (currentDirectory && currentSubDir && currentFile) {
+        if (currentFile && (currentDirectory || currentSubDir)) {
             setType('2');
             setTag(currentFile.tag || '');
             setText(currentFile.text || '');
@@ -64,6 +64,7 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
     }
 
     const onSubmit = () => {
+        console.log('onSubmit');
         if (!name) return true;
 
         if (typeModal === 'create') {
@@ -91,7 +92,7 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
         }
 
         if (typeModal === 'edit') {
-            if (type === '2' && (currentSubDir && currentDirectory && currentFile)) {
+            if (type === '2' && ((currentSubDir || currentDirectory) && currentFile)) {
                 editFile(
                     name,
                     tag,
@@ -186,7 +187,9 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
                             <button
                                 type="button"
                                 className="btn btn-primary" onClick={() => onSubmit()}
-                                disabled={type === "2" ? currentDirectory || currentSubDir ? false : true : false}
+                                disabled={
+                                    type === "2" ? currentDirectory || currentSubDir ? false : true : false || !name
+                                }
                             >
                                 Save {type === "2" ? "file" : "folder" }
                             </button>
@@ -199,10 +202,10 @@ function ModalComponent({ disabled, typeModal, title, buttonClassNames, dataModa
 }
 
 ModalComponent.defaultProps = {
-    title: "",
-    buttonClassNames: "",
-    dataModalId: "exampleModalLabel",
-    typeModal: "create",
+    title: '',
+    buttonClassNames: '',
+    dataModalId: 'exampleModalLabel',
+    typeModal: 'create',
     disabled: false
 }
 

@@ -36,8 +36,8 @@ function DirectoryItem ({ directory,  handleClickOnDirectory, showSubfolders}) {
             }}
             className={'destination'}
         >
+            <img src="./icons/Folder-icon.png" alt=""/>
             { directory.name }
-
             {
                 isShowSubDirectories && (
                     <DirectorySubfolders subfolders={directory.subfolders} parentFolder={directory} />

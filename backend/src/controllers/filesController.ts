@@ -136,7 +136,7 @@ class FilesController {
                     .execute();
             }
 
-            return res.status(204).end();
+            return res.status(200).send({ directory, subfolder });
         } catch (err) {
             next(err);
         }

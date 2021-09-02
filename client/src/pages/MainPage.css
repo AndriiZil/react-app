@@ -48,7 +48,6 @@ nav {
     height: 80%;
     margin: auto;
     width: 190px;
-    background-color: yellow;
     display: flex;
     flex-direction: column;
 }
@@ -57,22 +56,23 @@ nav {
     width: 350px;
     height: 80%;
     margin: auto;
-    background-color: salmon;
 }
 
 .file {
     width: 40px;
     height: 40px;
     margin: 25px 0px 10px 25px;
-    border: 1px solid blue;
-    overflow:hidden;
-    display:inline-block;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     text-overflow: ellipsis;
     white-space: nowrap;
+    align-items: center;
 }
 
 .file.active {
-    border-color: yellow;
+    border-color: red;
+    font-weight: bold;
 }
 
 .filesContainer {
@@ -85,7 +85,6 @@ nav {
     width: 100%;
     margin: auto;
     height: 80%;
-    background-color: aqua;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -99,14 +98,12 @@ nav {
 
 li {
     list-style: none;
-    color: white;
-    padding: 5px;
+    color: darkblue;
 }
 
 .selected {
     font-weight: bold;
-    /*background-color: white;*/
-    color: blue;
+    color: red;
 }
 
 li > span {
@@ -115,4 +112,18 @@ li > span {
 
 #editInput {
     width: 50px;
+}
+
+.drop {
+    background-color: chartreuse;
+    color: white;
+}
+
+li img {
+    padding: 4px;
+}
+
+.file-icon {
+    width: 16px;
+    height: 16px;
 }

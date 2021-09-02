@@ -24,6 +24,7 @@ function DirectorySubfolderItem ({ subfolder, parentFolder }) {
 
     return (
         <li onClick={handleSubfolderClick} className={'destination'} id={subfolder.id} >
+            <img src="./icons/Folder-icon.png" alt=""/>
             <span id={subfolder.id}>{subfolder.name}</span>
         </li>
     )
